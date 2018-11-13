@@ -110,20 +110,19 @@ class FastFieldInner<Values = {}, Props = {}> extends React.Component<
   ) {
     if (this.props.shouldUpdate) {
       return this.props.shouldUpdate(props, this.props);
-    } else if (
-      getIn(this.props.formik.values, this.props.name) !==
-        getIn(props.formik.values, this.props.name) ||
-      getIn(this.props.formik.errors, this.props.name) !==
-        getIn(props.formik.errors, this.props.name) ||
-      getIn(this.props.formik.touched, this.props.name) !==
-        getIn(props.formik.touched, this.props.name) ||
-      Object.keys(this.props).length !== Object.keys(props).length ||
-      this.props.formik.isSubmitting !== props.formik.isSubmitting
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    } 
+
+    return (
+      props.formik.lastTouched === this.props.name &&
+      (this.props.formik.isSubmitting !== props.formik.isSubmitting ||
+        Object.keys(this.props).length !== Object.keys(props).length ||
+        getIn(this.props.formik.values, this.props.name) !==
+          getIn(props.formik.values, this.props.name) ||
+        getIn(this.props.formik.errors, this.props.name) !==
+          getIn(props.formik.errors, this.props.name) ||
+        getIn(this.props.formik.touched, this.props.name) !==
+          getIn(props.formik.touched, this.props.name))
+    );
   }
 
   componentDidMount() {
